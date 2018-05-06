@@ -8,7 +8,7 @@
 # ==============================
 """
 import png
-import pfm
+from . import pfm
 import numpy as np
 import matplotlib.colors as cl
 import matplotlib.pyplot as plt
@@ -535,8 +535,8 @@ def read_flo_file(filename):
     else:
         w = np.fromfile(f, np.int32, count=1)
         h = np.fromfile(f, np.int32, count=1)
-        print("Reading %d x %d flow file in .flo format" % (h, w))
-        data2d = np.fromfile(f, np.float32, count=2 * w * h)
+        print(("Reading %d x %d flow file in .flo format" % (h, w)))
+        data2d = np.fromfile(f, np.float32, count=2 * w[0] * h[0])
         # reshape data into 3D array (columns, rows, channels)
         data2d = np.resize(data2d, (h[0], w[0], 2))
     f.close()
@@ -553,7 +553,7 @@ def read_png_file(flow_file):
     flow_direct = flow_object.asDirect()
     flow_data = list(flow_direct[2])
     (w, h) = flow_direct[3]['size']
-    print("Reading %d x %d flow file in .png format" % (h, w))
+    print(("Reading %d x %d flow file in .png format" % (h, w)))
     flow = np.zeros((h, w, 3), dtype=np.float64)
     for i in range(len(flow_data)):
         flow[i, :, 0] = flow_data[i][0::3]
@@ -573,9 +573,9 @@ def read_pfm_file(flow_file):
     :param flow_file: name of the flow file
     :return: optical flow data in matrix
     """
-    import pfm
+    from . import pfm
     (data, scale) = pfm.readPFM(flow_file)
-    return data 
+    return data
 
 
 # fast resample layer
@@ -594,7 +594,7 @@ def resample(img, sz):
     height_scale =  float(in_height) / float(out_height)
     width_scale =  float(in_width) / float(out_width)
 
-    [x,y] = np.meshgrid(range(out_width), range(out_height))
+    [x,y] = np.meshgrid(list(range(out_width)), list(range(out_height)))
     xx = x * width_scale
     yy = y * height_scale
     x0 = np.floor(xx).astype(np.int32)
