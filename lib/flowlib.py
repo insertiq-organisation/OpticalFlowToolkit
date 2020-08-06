@@ -8,7 +8,7 @@
 # ==============================
 """
 import png
-import pfm
+from . import pfm
 import numpy as np
 import matplotlib.colors as cl
 import matplotlib.pyplot as plt
