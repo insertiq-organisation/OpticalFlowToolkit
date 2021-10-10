@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 import png
-import pfm
+from . import pfm
 import numpy as np
 import matplotlib.colors as cl
 import matplotlib.pyplot as plt
